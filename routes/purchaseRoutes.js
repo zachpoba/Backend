@@ -6,14 +6,16 @@ const router = express.Router();
 
 router.get('/checkout-session/:planID', authController.protect, purchaseController.getCheckoutSession);
 
-app.get("/checkout-session", async (req, res) => {
+//change get and posts to router
+/*app.get("/checkout-session", async (req, res) => {
     const { sessionId } = req.query;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     res.send(session);
-  });
+  });*/
 
   // Fetch the Checkout Session to display the JSON result on the success page
-  app.post("/create-checkout-session", async (req, res) => {
+router.post("/create-checkout-session", authController.protect, purchaseController.createCheckoutSession);
+  /*app.post("/create-checkout-session", async (req, res) => {
     const domainURL = process.env.DOMAIN;
     const { priceId } = req.body;
   
@@ -49,17 +51,18 @@ app.get("/checkout-session", async (req, res) => {
         }
       });
     }
-  });
-  
-  app.get("/setup", (req, res) => {
+  });*/
+router.get("/setup", purchaseController.setupConfig);
+ /* app.get("/setup", (req, res) => {
     res.send({
       publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-      basicPrice: process.env.BASIC_PRICE_ID,
-      proPrice: process.env.PRO_PRICE_ID,
+      //basicPrice: process.env.BASIC_PRICE_ID,
+      //proPrice: process.env.PRO_PRICE_ID,
     });
   });
-  
-  app.post('/customer-portal', async (req, res) => {
+*/
+router.post("/customer-portal", purchaseController.customerPortal);
+  /*app.post('/customer-portal', async (req, res) => {
     // For demonstration purposes, we're using the Checkout session to retrieve the customer ID. 
     // Typically this is stored alongside the authenticated user in your database.
     const { sessionId } = req.body;
@@ -77,10 +80,11 @@ app.get("/checkout-session", async (req, res) => {
     res.send({
       url: portalsession.url,
     });
-  });
+  });*/
   
   // Webhook handler for asynchronous events.
-  app.post("/webhook", async (req, res) => {
+router.post("/webhook", purchaseController.webhookHandler);
+  /*app.post("/webhook", async (req, res) => {
     let eventType;
     // Check if webhook signing is configured.
     if (process.env.STRIPE_WEBHOOK_SECRET) {
@@ -113,9 +117,9 @@ app.get("/checkout-session", async (req, res) => {
     }
   
     res.sendStatus(200);
-  });
+  });*/
   
-  app.listen(3000, () => console.log(`Node server listening at http://localhost:${3000}/`));
+  //app.listen(3000, () => console.log(`Node server listening at http://localhost:${3000}/`));
 
 
 

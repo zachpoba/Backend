@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-//stripe
+//stripe cli ID: acct_1Hje1GFgYf0t2Tbm
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 process.on('uncaughtException', (err) => {
